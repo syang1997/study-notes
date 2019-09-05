@@ -39,11 +39,35 @@ $ git status
 
 ### 3.添加
 
+```shell
+$ git add
+```
 
+将指定文件添加到本地仓库中;
 
+### 4.提交
 
+```shell
+$ git commit
+```
 
+将现在仓库中的提交为一个版本,可以-m"msg"来添加上commit的信息;
 
+### 5.日志
+
+```shell
+$ git log
+```
+
+查看本仓库的commit日志;
+
+### 6.推送
+
+```shell
+$ git push
+```
+
+将现版本推送到github中的远端项目;
 
 
 
