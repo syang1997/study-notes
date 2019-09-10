@@ -12,3 +12,8 @@
 ### 在idea中添加try/catch的快捷键
 ctrl+alt+t
 
+## 2019.9.10
+
+### idea中全文替换
+
+通过快捷键Ctrl+Shift+R打开窗口
