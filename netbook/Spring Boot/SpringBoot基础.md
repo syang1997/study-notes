@@ -131,3 +131,7 @@ Cacheable的属性:
 spring.redis.host=114.55.144.154
 ### 4.操作redis
 在spring boot中使用Template操作
+
+## 整合elasticserach
+
+https://blog.csdn.net/qq_39456689/article/details/86628058
