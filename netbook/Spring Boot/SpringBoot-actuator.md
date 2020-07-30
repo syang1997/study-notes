@@ -1,4 +1,4 @@
-# Spring Boot actuaor
+# Spring Boot actuator
 
 ## 一.配置启动
 
@@ -170,3 +170,155 @@ management.endpoints.web.cors.allowed-methods=GET,POST
 ### 8.servlet & controller
 
 @ControllerEndpoint @ServletEndpoint 会导致高耦合和不可移植不推荐使用
+
+### 9.健康信息
+
+management.endpoint.health。显示详细和management.endpoint.health。
+
+| Name              | Description                                                  |
+| :---------------- | :----------------------------------------------------------- |
+| `never`           | 细节从未显示。                                               |
+| `when-authorized` | 详细信息只显示给授权用户。可以使用management.endpoint.health.roles配置授权角色。 |
+| `always`          | 详细信息将显示给所有用户。                                   |
+
+#### 1).自动配置的健康检测
+
+在配置了一些特定的数据库后，springboot会自动配置上其健康检测
+
+| Name                                                         | Description                                               |
+| :----------------------------------------------------------- | :-------------------------------------------------------- |
+| [`CassandraHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/cassandra/CassandraHealthIndicator.java) | Checks that a Cassandra database is up.                   |
+| [`CouchbaseHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/couchbase/CouchbaseHealthIndicator.java) | Checks that a Couchbase cluster is up.                    |
+| [`DataSourceHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/jdbc/DataSourceHealthIndicator.java) | Checks that a connection to `DataSource` can be obtained. |
+| [`DiskSpaceHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/system/DiskSpaceHealthIndicator.java) | Checks for low disk space.                                |
+| [`ElasticSearchRestHealthContributorAutoConfiguration`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/elasticsearch/ElasticSearchRestHealthContributorAutoConfiguration.java) | Checks that an Elasticsearch cluster is up.               |
+| [`HazelcastHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/hazelcast/HazelcastHealthIndicator.java) | Checks that a Hazelcast server is up.                     |
+| [`InfluxDbHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/influx/InfluxDbHealthIndicator.java) | Checks that an InfluxDB server is up.                     |
+| [`JmsHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/jms/JmsHealthIndicator.java) | Checks that a JMS broker is up.                           |
+| [`LdapHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/ldap/LdapHealthIndicator.java) | Checks that an LDAP server is up.                         |
+| [`LivenessStateHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/availability/LivenessStateHealthIndicator.java) | Exposes the "Liveness" application availability state.    |
+| [`MailHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/mail/MailHealthIndicator.java) | Checks that a mail server is up.                          |
+| [`MongoHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/mongo/MongoHealthIndicator.java) | Checks that a Mongo database is up.                       |
+| [`Neo4jHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/neo4j/Neo4jHealthIndicator.java) | Checks that a Neo4j database is up.                       |
+| [`PingHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/health/PingHealthIndicator.java) | Always responds with `UP`.                                |
+| [`RabbitHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/amqp/RabbitHealthIndicator.java) | Checks that a Rabbit server is up.                        |
+| [`ReadinessStateHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/availability/ReadinessStateHealthIndicator.java) | Exposes the "Readiness" application availability state.   |
+| [`RedisHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/redis/RedisHealthIndicator.java) | Checks that a Redis server is up.                         |
+| [`SolrHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/solr/SolrHealthIndicator.java) | Checks that a Solr server is up.                          |
+
+#### 2).自定义健康检测
+
+```java
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyHealthIndicator implements HealthIndicator {
+
+    @Override
+    public Health health() {
+        int errorCode = check(); // perform some specific health check
+        if (errorCode != 0) {
+            return Health.down().withDetail("Error Code", errorCode).build();
+        }
+        return Health.up().build();
+    }
+
+}
+```
+
+如果需要其他的状态可以在`management.endpoint.health.status.order`中定义
+
+```properties
+management.endpoint.health.status.order=fatal,down,out-of-service,unknown,up
+```
+
+任何没有映射的状态都是对应的200，如果自定义的状态可以在配置中映射其返回码
+
+```properties
+management.endpoint.health.status.http-mapping.down=503
+management.endpoint.health.status.http-mapping.fatal=503
+management.endpoint.health.status.http-mapping.out-of-service=503
+```
+
+内置的状态映射如下
+
+| Status         | Mapping                                      |
+| :------------- | :------------------------------------------- |
+| DOWN           | SERVICE_UNAVAILABLE (503)                    |
+| OUT_OF_SERVICE | SERVICE_UNAVAILABLE (503)                    |
+| UP             | No mapping by default, so http status is 200 |
+| UNKNOWN        | No mapping by default, so http status is 200 |
+
+#### 3).响应试健康监控
+
+```java
+@Component
+public class MyReactiveHealthIndicator implements ReactiveHealthIndicator {
+
+    @Override
+    public Mono<Health> health() {
+        return doHealthCheck() //perform some specific health check that returns a Mono<Health>
+            .onErrorResume(ex -> Mono.just(new Health.Builder().down(ex).build()));
+    }
+
+}
+```
+
+| Name                                                         | Description                             |
+| :----------------------------------------------------------- | :-------------------------------------- |
+| [`CassandraReactiveHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/cassandra/CassandraReactiveHealthIndicator.java) | Checks that a Cassandra database is up. |
+| [`CouchbaseReactiveHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/couchbase/CouchbaseReactiveHealthIndicator.java) | Checks that a Couchbase cluster is up.  |
+| [`MongoReactiveHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/mongo/MongoReactiveHealthIndicator.java) | Checks that a Mongo database is up.     |
+| [`RedisReactiveHealthIndicator`](https://github.com/spring-projects/spring-boot/tree/v2.3.1.RELEASE/spring-boot-project/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/redis/RedisReactiveHealthIndicator.java) | Checks that a Redis server is up.       |
+
+## 三.通过http来进行监控和管理
+
+### 1.自定义管理端点路径
+
+```properties
+management.endpoints.web.base-path=/
+management.endpoints.web.path-mapping.health=healthcheck
+```
+
+### 2.自定义配置服务的端口
+
+```properties
+management.server.port=8081
+```
+
+### 3.禁用Http端口
+
+```properties
+management.server.port=-1
+
+management.endpoints.web.exposure.exclude=*
+```
+
+## 四.日志
+
+访问http://localhost:8080/actuator/loggers可获取到日志
+
+post一个实体即可设置日志等级
+
+```json
+{
+    "configuredLevel": "DEBUG"
+}
+```
+
+日志等级一共有：
+
+- `TRACE`
+- `DEBUG`
+- `INFO`
+- `WARN`
+- `ERROR`
+- `FATAL`
+- `OFF`
+- `null`
+
+## 五.指标
+
+actuator为度量器提供依赖关系管理和自动配置，Micrometer是一个应用程序度量facade，支持多种监控系统，包括:
