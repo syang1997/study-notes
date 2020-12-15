@@ -1,0 +1,7 @@
+# TracingRestTemplate
+
+## 1.RestTemplateCustomizer
+
+实现RestTemplateCustomizer接口，接口的作用是用于自定义restTemplate的回调接口。
+
+也就是在build的时候可以将实现类传入，则build的时候就会去执行接口中的回调方法。这样就可以执行一系列的配置操作。例如将自定义的拦截器添加进restTemplate
