@@ -308,4 +308,3 @@ public static AbstractSpan createEntrySpan(String operationName, ContextCarrier 
 
 ContextCarrier的真正传输载体是CarrierItem，carrier的传输就是通过遍历item作为kv键值对来进行传输和解析。
 
-# Trace的发送
