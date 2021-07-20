@@ -51,3 +51,4 @@ spec: #资源规格
 2. 被控制的部分
 
 https://www.huweihuang.com/kubernetes-notes/ 
+
